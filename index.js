@@ -1,4 +1,6 @@
 import express from 'express';
+import { createServer, Agent } from 'http';
+import { Server } from 'socket.io';
 
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -12,19 +14,35 @@ import connetDB from './config/db.js';
 connetDB();
 const app = express();
 // app.use(cors(corsOptions));
+let httpServer = createServer(app);
+let io = new Server(httpServer, {
+    method: 'GET',
+    agent: Agent({ keepAlive: true }),
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+        credentials: true,
+        transports: ['websocket', 'polling'],
+    },
+    // allowEIO3: true,
+});
+io.on('connection', (socket) => {
+    console.log(`user ${socket.id} has connected`);
+    io.to(socket.id).emit('your id', socket.id);
+});
+export const getIO = () => io;
 
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 configViewEngine(app);
+
 initWebRoutes(app);
 
 const PORT = process.env.PORT || 3001;
-
 app.get('/', (req, res) => {
     res.send('hello api');
 });
 
-app.listen(PORT, console.log(`Server listening on port ${PORT}`));
+httpServer.listen(PORT, console.log(`Server listening on port ${PORT}`));

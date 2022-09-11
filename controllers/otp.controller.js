@@ -1,34 +1,64 @@
-import client from 'twilio';
+import * as nodemailer from 'nodemailer';
 import { generateOTP } from '../untils/otp.js';
-import { hash } from '../untils/hash.js';
+import { compare, hash } from '../untils/hash.js';
 
-import { createOTP } from '../services/otp.service.js';
+import { createOTP, deleteOTP, findOTPWithEmail } from '../services/otp.service.js';
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioPhone = process.env.TWILIO_PHONE;
+const user = process.env.MAIL_USER;
+const pass = process.env.MAIL_PASS;
 
-const clientTwilio = client(accountSid, authToken);
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: user,
+        pass: pass,
+    },
+});
 
 export const CreateOTPController = async (req, res) => {
-    const phone = req.body.phone;
+    const email = req.body.email;
     const otp = generateOTP();
 
     const hOTP = await hash(otp);
 
-    clientTwilio.messages
-        .create({
-            body: `Your OTP is ${otp}`,
-            from: twilioPhone,
-            to: phone,
-        })
-        .then((message) => console.log(message.sid));
-
-    let result = await createOTP(phone, hOTP);
+    const mailOptions = {
+        from: user,
+        to: email,
+        subject: 'Sending OTP',
+        text: otp,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+            return res.status(404).json({ code: 404, message: 'OTP not created' });
+        } else {
+            console.log('Email sent: ' + JSON.stringify(info));
+        }
+    });
+    let result = await createOTP(email, hOTP);
 
     if (result) {
         return res.status(200).json({ code: 200, message: 'OTP created successfully' });
     } else {
         return res.status(404).json({ code: 404, message: 'OTP not created' });
+    }
+};
+
+export const VerifyOTPController = async (req, res) => {
+    const { email, otp } = req.body;
+    const result = await findOTPWithEmail(email);
+    if (!result.length) {
+        return res.status(404).json({ code: 404, message: 'OTP expired' });
+    }
+    const lastOTP = result[result.length - 1];
+
+    if (lastOTP && !compare(otp, lastOTP.otp)) {
+        return res.status(401).json({ code: 401, message: 'OTP invalid' });
+    }
+    if (lastOTP && compare(otp, lastOTP.otp) && lastOTP.email === email) {
+        const dOtp = await deleteOTP(email);
+        if (dOtp) {
+            return res.status(200).json({ code: 200, message: 'OTP verified' });
+        }
     }
 };

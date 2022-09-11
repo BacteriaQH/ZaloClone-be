@@ -1,25 +1,11 @@
 import mongoose from 'mongoose';
+import { agentSchema } from './qrcode.model.js';
 
-const deviceSchema = new mongoose.Schema({
-    os: {
-        name: String,
-        version: String,
-    },
-    browser: {
-        name: String,
-        version: String,
-    },
-});
 const userSchema = new mongoose.Schema(
     {
         name: {
             type: String,
             required: true,
-        },
-        phone: {
-            type: String,
-            required: true,
-            unique: true,
         },
         password: {
             type: String,
@@ -27,6 +13,8 @@ const userSchema = new mongoose.Schema(
         },
         email: {
             type: String,
+            required: true,
+            unique: true,
         },
         isMale: {
             type: Boolean,
@@ -42,7 +30,7 @@ const userSchema = new mongoose.Schema(
             required: true,
             default: false,
         },
-        activeDevice: [deviceSchema],
+        activeDevice: [agentSchema],
     },
     {
         timestamps: true,

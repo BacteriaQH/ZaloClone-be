@@ -10,9 +10,9 @@ export const createUser = async (data) => {
     }
 };
 
-export const checkPhone = async (phone) => {
+export const checkEmail = async (email) => {
     try {
-        const user = await User.findOne({ phone });
+        const user = await User.findOne({ email });
         return user;
     } catch (error) {
         console.log(error);
@@ -20,9 +20,9 @@ export const checkPhone = async (phone) => {
     }
 };
 
-export const findUser = async (phone) => {
+export const findUser = async (email) => {
     try {
-        const user = await User.findOne({ phone: phone });
+        const user = await User.findOne({ email: email });
         return user;
     } catch (err) {
         console.log(err);
