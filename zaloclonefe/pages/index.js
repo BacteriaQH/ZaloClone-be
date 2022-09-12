@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function Home() {
     return (
         <div className={styles.container}>
-            <Button type="primary" className={styles.button}>Đăng nhập</Button>
+                <Link href='/login'><Button type="primary" className={styles.button}>Đăng nhập</Button></Link>
             <Link href='/register'><Button type="dashed" className={styles.button}>Đăng ký</Button></Link>
         </div>
     );

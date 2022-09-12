@@ -21,11 +21,11 @@ const Register = () => {
                 />
                 <Input placeholder="Tên đầy đủ" value={userName} onChange={handedUserName} />
                 {userName === '' ? (
-                    <Button type="primary" className="button" disabled>
+                    <Button type="primary" className="buttonResgiter" disabled>
                         Tiep tuc
                     </Button>
                 ) : (
-                    <Button type="primary" className="button" onClick={handelUserNameSubmit}>
+                    <Button type="primary" className="buttonResgiter" onClick={handelUserNameSubmit}>
                         <Link href="/register/email">Tiếp tục</Link>
                     </Button>
                 )}

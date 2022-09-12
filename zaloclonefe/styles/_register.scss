@@ -2,12 +2,15 @@
     height: 100vh;
     @include flex(center, center);
     flex-direction: column;
+    background-image: url('../public//image//pagebg-1-1920x705.jpg');
+
     &__container {
         height: 70%;
         width: 350px;
         @include flex(center, flex-start);
         flex-direction: column;
         border: 1px solid black;
+        background-color: #fff;
     }
 }
 .ant-page-header {
@@ -41,31 +44,31 @@
     border-right: none;
     border-top: none;
 }
-.button {
+.buttonResgiter {
     width: 200px;
     height: 40px !important;
     border-radius: 20px !important;
+    margin-top: 20px;
 }
 .ant-form {
     width: 100%;
     .ant-form-item {
         width: 100%;
         .ant-row {
-            justify-content:center;
+            justify-content: center;
         }
     }
     .ant-col {
         span {
             border-right: none;
             border-left: none;
-          
         }
     }
 }
-.otpItem{
+.otpItem {
     width: 50px;
     height: 50px;
-    span{
-       font-size: 20px;
+    span {
+        font-size: 20px;
     }
 }
