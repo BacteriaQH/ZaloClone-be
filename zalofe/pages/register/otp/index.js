@@ -1,13 +1,18 @@
 import { PageHeader, Button } from 'antd';
 import React, { useState } from 'react';
-import { Input } from 'antd';
-import Link from 'next/link';
 import OtpInput from 'react-otp-input';
-const Register = () => {
-    const [otp, setOtp] = useState('');
-    const handleChange = (otp) => setOtp(otp);
-    // const handelUserNameSubmit = () => {
-    //     localStorage.setItem('username', userName);
+import Link from 'next/link';
+import axios from 'axios';
+const Otp = () => {
+    const [otp, setOtp] = useState();
+    const handleOtp = (otp) => setOtp(otp);
+    // const handelEmailSubmit = async () => {
+    //    try{
+    //         axios.post()
+    //    }
+    //    catch(e){
+    //     console.log(err)
+    //    }
     // };
     return (
         <div className="register-wrap">
@@ -20,23 +25,18 @@ const Register = () => {
                 />
                 <OtpInput
                     value={otp}
-                    onChange={handleChange}
+                    onChange={handleOtp}
                     numInputs={6}
                     separator={<span>-</span>}
                     className="otpItem"
-                    inputStyle={{ width: '40px', height: '40px', backgroundColor: '#fff', fontSize: '20px' }}
-                    shouldAutoFocus
-                    hasErrored
-                    isInputNum
                 />
-                <p style={{ fontSize: '13px' }}>Gửi lại mã</p>
-                {otp.length < 6 ? (
-                    <Button type="primary" className="button" disabled>
-                        Tiep tuc
+                {otp ? (
+                    <Button type="primary" className="buttonResgiter">
+                        <Link href="/register/otp">Tiếp tục</Link>
                     </Button>
                 ) : (
-                    <Button type="primary" className="button">
-                        <Link href="/register/email">Tiếp tục</Link>
+                    <Button type="primary" className="buttonResgiter" disabled>
+                        Tiếp tục
                     </Button>
                 )}
             </div>
@@ -44,4 +44,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Otp;
