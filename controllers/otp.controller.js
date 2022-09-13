@@ -16,7 +16,7 @@ let transporter = nodemailer.createTransport({
 });
 
 export const CreateOTPController = async (req, res) => {
-    const email = req.body.email;
+    const { email } = req.query;
     const otp = generateOTP();
 
     const hOTP = await hash(otp);
@@ -30,17 +30,18 @@ export const CreateOTPController = async (req, res) => {
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
-            return res.status(404).json({ code: 404, message: 'OTP not created' });
+            return res.status(200).json({ code: 404, message: 'OTP not created' });
         } else {
             console.log('Email sent: ' + JSON.stringify(info));
         }
     });
+
     let result = await createOTP(email, hOTP);
 
     if (result) {
         return res.status(200).json({ code: 200, message: 'OTP created successfully' });
     } else {
-        return res.status(404).json({ code: 404, message: 'OTP not created' });
+        return res.status(200).json({ code: 404, message: 'OTP not created' });
     }
 };
 
@@ -48,12 +49,12 @@ export const VerifyOTPController = async (req, res) => {
     const { email, otp } = req.body;
     const result = await findOTPWithEmail(email);
     if (!result.length) {
-        return res.status(404).json({ code: 404, message: 'OTP expired' });
+        return res.status(200).json({ code: 404, message: 'OTP expired' });
     }
     const lastOTP = result[result.length - 1];
 
     if (lastOTP && !compare(otp, lastOTP.otp)) {
-        return res.status(401).json({ code: 401, message: 'OTP invalid' });
+        return res.status(200).json({ code: 401, message: 'OTP invalid' });
     }
     if (lastOTP && compare(otp, lastOTP.otp) && lastOTP.email === email) {
         const dOtp = await deleteOTP(email);

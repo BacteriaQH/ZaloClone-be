@@ -25,16 +25,16 @@ export const GenerateQRCodeController = async (req, res) => {
         return i.split(') ');
     });
     let agentObject = {};
-    agentObject = {
-        browser: {
-            name: arr[2][1].split(' ')[0].toString().split('/')[0],
-            version: arr[2][1].split(' ')[0].toString().split('/')[1],
-        },
-        os: {
-            name: arr[1][0].split(' ')[0],
-            version: arr[1][0].split(' ')[2],
-        },
-    };
+    // agentObject = {
+    //     browser: {
+    //         name: arr[2][1].split(' ')[0].toString().split('/')[0],
+    //         version: arr[2][1].split(' ')[0].toString().split('/')[1],
+    //     },
+    //     os: {
+    //         name: arr[1][0].split(' ')[0],
+    //         version: arr[1][0].split(' ')[2],
+    //     },
+    // };
 
     //get socket id
     const socket = io.sockets.adapter.rooms;
@@ -67,7 +67,7 @@ export const GenerateQRCodeController = async (req, res) => {
 
     const qrCode = await generateQRCode(url);
     const imgTag = `<img src="${qrCode}" />`;
-    return res.json({ c, agent, ip, socketId, imgTag });
+    return res.send(imgTag);
 };
 
 export const VerifyQRCodeController = async (req, res) => {
@@ -83,16 +83,17 @@ export const VerifyQRCodeController = async (req, res) => {
     const [preM, socketID] = d.split('.');
     const M = Number(deobfuscate(preM));
     const qrcode = await getQRCode(socketID);
-    const { _id, name } = await findUser(email);
+    const user = await findUser(email);
+
     const deltaT = 60000;
     const timeStampNow = Date.now();
-
+    const { name } = user;
     if (timeStampNow - M > deltaT) {
-        return res.status(401).send({ code: 401, d, timeStampNow, M, socketID, message: 'QR code expired' });
+        return res.status(200).send({ code: 401, d, timeStampNow, M, socketID, message: 'QR code expired' });
     } else {
         if (user && qrcode && qrcode.socketId === socketID) {
             const { socketID, userAgent } = qrcode;
-            io.to(socketID).emit('qr-code-verifing', { email, _id, name });
+            io.to(socketID).emit('qr-code-verifing', { email, name });
             return res.status(200).send({ code: 200, userAgent });
         }
     }

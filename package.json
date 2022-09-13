@@ -1,78 +1,43 @@
 {
-<<<<<<< HEAD
-    "name": "be",
+    "name": "zaloclone-be",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon index.js"
+        "start": "nodemon index.js "
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "bcrypt": "^5.0.1",
-        "canvas": "^2.9.3",
+        "canvas": "^2.10.1",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "crypto": "^1.0.1",
         "crypto-js": "^4.1.1",
         "deep-email-validator": "^0.1.21",
-        "dotenv": "^16.0.1",
+        "dotenv": "^16.0.2",
         "express": "^4.18.1",
-        "express-useragent": "^1.0.15",
         "jsonwebtoken": "^8.5.1",
-        "moment": "^2.29.4",
-        "mongoose": "^6.5.2",
+        "mongoose": "^6.6.0",
         "nodemailer": "^6.7.8",
         "otp-generator": "^4.0.0",
         "qrcode": "^1.5.1",
-        "socket.io": "^4.5.1"
+        "socket.io": "^4.5.2",
+        "twilio": "^3.82.0"
     },
     "devDependencies": {
         "nodemon": "^2.0.19"
-    }
-=======
-  "type": "module",
-  "name": "zaloclone-be",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js "
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BacteriaQH/ZaloClone-be.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/BacteriaQH/ZaloClone-be/issues"
-  },
-  "homepage": "https://github.com/BacteriaQH/ZaloClone-be#readme",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "canvas": "^2.10.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "crypto-js": "^4.1.1",
-    "dotenv": "^16.0.2",
-    "express": "^4.18.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.6.0",
-    "otp-generator": "^4.0.0",
-    "qrcode": "^1.5.1",
-    "socket.io": "^4.5.2",
-    "twilio": "^3.82.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.19"
-  }
->>>>>>> 5413be690586a1fd633506bbdda294a10338dbef
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BacteriaQH/ZaloClone-be.git"
+    },
+    "bugs": {
+        "url": "https://github.com/BacteriaQH/ZaloClone-be/issues"
+    },
+    "homepage": "https://github.com/BacteriaQH/ZaloClone-be#readme"
 }
